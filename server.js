@@ -3,6 +3,7 @@ const cors = require("cors");
 const axios = require("axios").default;
 require("dotenv").config();
 const PORT = 3000;
+const data = require("./Movie Data/data.json");
 const app = express();
 app.use(cors());
 let apiKey = process.env.API_KEY;
