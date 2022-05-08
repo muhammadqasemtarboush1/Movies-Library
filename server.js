@@ -1,12 +1,22 @@
 const express = require("express");
 const cors = require("cors");
 const axios = require("axios").default;
+const bodyParser = require("body-parser");
 require("dotenv").config();
 const PORT = 3000;
 const data = require("./Movie Data/data.json");
 const app = express();
+const morgan = require("morgan");
+
 app.use(cors());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(morgan());
+
 let apiKey = process.env.API_KEY;
+const { Client } = require("pg");
+let url = "postgres://mk:0000@localhost:5432/moviesdb";
+const client = new Client(url);
 
 // Home page
 app.get("/", HandleMoive);
@@ -29,6 +39,13 @@ app.get("/changes", getChanges);
 app.get("/favorite", (req, res) => {
   res.send("Welcome to Favorite Page");
 });
+
+// @rout
+// @description: addMovie
+app.post("/addMovie", addMovie);
+// @rout
+// @description: getMovie
+app.get("/getMovies", getMovies);
 
 // error rout just for testing purposes
 app.get("/err", (req, res, next) => {
@@ -157,7 +174,36 @@ function Changes(id, adult) {
   (this.id = id), (this.adult = adult);
 }
 
-// runing the server
-app.listen(PORT, () => {
-  console.log(`Example app listening on port ${PORT}`);
+function addMovie(req, res) {
+  let { title, releaseDate, posterPath, overview, pRating } = req.body;
+  let sql = `INSERT INTO film (title,releaseDate,posterPath,overview,pRating ) VALUES($1, $2, $3,$4,$5) RETURNING *;`;
+  let values = [title, releaseDate, posterPath, overview, pRating];
+
+  client
+    .query(sql, values)
+    .then((result) => {
+      console.log(result);
+      return res.status(201).json(result.rows);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
+function getMovies(req, res) {
+  let sql = `SELECT * FROM film ;`;
+  client
+    .query(sql)
+    .then((result) => {
+      console.log(result);
+      res.json(result.rows);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+client.connect().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Example app listening on port ${PORT}`);
+  });
 });

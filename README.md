@@ -21,6 +21,7 @@ This project build with:
 - Node.js
 - Express.js
 - 3th Party API - The Movie DB
+- Postgres DB
 
 Before starting type into your terminal:
 
@@ -41,3 +42,5 @@ We have the following routes :
 - /trending, Get the trending movies data from the Movie DB API
 - /tv , Get the list of official genres for TV shows.
 - /changes,Get a list of all of the movie ids that have been changed in the past 24 hours
+- /addMovie , Store the movie into our database
+- /getMovies, Get all movies stored into database
