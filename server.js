@@ -13,9 +13,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(morgan());
 
+// keys
 let apiKey = process.env.API_KEY;
+let url = process.env.DATABASE_URL;
+
+// sql
 const { Client } = require("pg");
-let url = "postgres://mk:0000@localhost:5432/moviesdb";
 const client = new Client(url);
 
 // Home page
