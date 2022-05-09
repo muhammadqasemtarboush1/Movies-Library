@@ -10,6 +10,10 @@ Web Request Response Cycle with 3th party api
 
 ![WRRC3TH](./WRRC3TH.jpg)
 
+Web Request Response Cycle with SQL DB
+
+![task14](./WRRC.jpg)
+
 ## Overview
 
 a movie app that can check the latest movies based on categories

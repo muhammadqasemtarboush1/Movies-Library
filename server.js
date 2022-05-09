@@ -50,6 +50,18 @@ app.post("/addMovie", addMovie);
 // @description: getMovie
 app.get("/getMovies", getMovies);
 
+// @rout
+// @description: updateMovies
+app.put("/updateMovie/:id", updateMovie);
+
+// @rout
+// @description: updateMovies
+app.delete("/deleteMovie/:id", deleteMovie);
+
+// @rout
+// @description: updateMovies
+app.get("/getMovie/:id", getMovie);
+
 // error rout just for testing purposes
 app.get("/err", (req, res, next) => {
   next(new Error("Sorry the page you are trying to access is not available"));
@@ -205,6 +217,52 @@ function getMovies(req, res) {
       console.log(err);
     });
 }
+
+function updateMovie(req, res) {
+  // pRating
+  let id = req.params.id;
+  let pRating = req.body.pRating;
+
+  let sql = `UPDATE film SET pRating=$1 WHERE id = ${id} RETURNING *`;
+  let values = [pRating];
+  client
+    .query(sql, values)
+    .then((result) => {
+      res.status(301).json(result.rows);
+    })
+    .catch((err) => {
+      throw err;
+    });
+}
+
+function deleteMovie(req, res) {
+  let id = req.params.id;
+  let sql = `DELETE FROM film WHERE id =${id} RETURNING *`;
+  client
+    .query(sql)
+    .then((result) => {
+      res.status(202).json({ Message: "Movie deleted successfully" });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
+function getMovie(req, res) {
+  let id = req.params.id;
+  console.log(id, "ididididiidd");
+
+  let sql = `SELECT * FROM film  WHERE id =${id}`;
+  client
+    .query(sql)
+    .then((result) => {
+      res.json(result.rows);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
 client.connect().then(() => {
   app.listen(PORT, () => {
     console.log(`Example app listening on port ${PORT}`);
