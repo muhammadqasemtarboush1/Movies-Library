@@ -19,6 +19,7 @@ let url = process.env.DATABASE_URL;
 
 // sql
 const { Client } = require("pg");
+
 const client = new Client({
   connectionString: process.env.DATABASE_URL,
   ssl: {
