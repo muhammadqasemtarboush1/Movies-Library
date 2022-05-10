@@ -4,9 +4,11 @@ const axios = require("axios").default;
 const bodyParser = require("body-parser");
 require("dotenv").config();
 const PORT = process.env.PORT || 3000;
-const data = require("./Movie Data/data.json");
+
 const app = express();
-const morgan = require("morgan");
+app.use(cors());
+let apiKey = process.env.API_KEY;
+const data = require("./Movie Data/data.json");
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -14,7 +16,6 @@ app.use(bodyParser.json());
 app.use(morgan());
 
 // keys
-let apiKey = process.env.API_KEY;
 
 let url = process.env.DATABASE_URL;
 
