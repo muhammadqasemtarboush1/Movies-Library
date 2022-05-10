@@ -190,9 +190,9 @@ function Changes(id, adult) {
 }
 
 function addMovie(req, res) {
-  let { title, releaseDate, posterPath, overview, pRating } = req.body;
-  let sql = `INSERT INTO film (title,releaseDate,posterPath,overview,pRating ) VALUES($1, $2, $3,$4,$5) RETURNING *;`;
-  let values = [title, releaseDate, posterPath, overview, pRating];
+  let { title, releaseDate, posterPath, overview, comments } = req.body;
+  let sql = `INSERT INTO movie (title,releaseDate,posterPath,overview,comments  ) VALUES($1, $2, $3,$4,$5) RETURNING *;`;
+  let values = [title, releaseDate, posterPath, overview, comments];
 
   client
     .query(sql, values)
@@ -206,7 +206,7 @@ function addMovie(req, res) {
 }
 
 function getMovies(req, res) {
-  let sql = `SELECT * FROM film ;`;
+  let sql = `SELECT * FROM movie ;`;
   client
     .query(sql)
     .then((result) => {
@@ -219,12 +219,12 @@ function getMovies(req, res) {
 }
 
 function updateMovie(req, res) {
-  // pRating
+  // comments
   let id = req.params.id;
-  let pRating = req.body.pRating;
+  let comments = req.body.comments;
 
-  let sql = `UPDATE film SET pRating=$1 WHERE id = ${id} RETURNING *`;
-  let values = [pRating];
+  let sql = `UPDATE movie SET comments =$1 WHERE id = ${id} RETURNING *`;
+  let values = [comments];
   client
     .query(sql, values)
     .then((result) => {
@@ -237,7 +237,7 @@ function updateMovie(req, res) {
 
 function deleteMovie(req, res) {
   let id = req.params.id;
-  let sql = `DELETE FROM film WHERE id =${id} RETURNING *`;
+  let sql = `DELETE FROM movie WHERE id =${id} RETURNING *`;
   client
     .query(sql)
     .then((result) => {
@@ -252,7 +252,7 @@ function getMovie(req, res) {
   let id = req.params.id;
   console.log(id, "ididididiidd");
 
-  let sql = `SELECT * FROM film  WHERE id =${id}`;
+  let sql = `SELECT * FROM movie  WHERE id =${id}`;
   client
     .query(sql)
     .then((result) => {
