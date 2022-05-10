@@ -3,7 +3,7 @@ const cors = require("cors");
 const axios = require("axios").default;
 const bodyParser = require("body-parser");
 require("dotenv").config();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 const data = require("./Movie Data/data.json");
 const app = express();
 const morgan = require("morgan");
@@ -19,7 +19,13 @@ let url = process.env.DATABASE_URL;
 
 // sql
 const { Client } = require("pg");
-const client = new Client(url);
+
+const client = new Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false,
+  },
+});
 
 // Home page
 app.get("/", HandleMoive);
