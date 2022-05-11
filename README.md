@@ -48,3 +48,6 @@ We have the following routes :
 - /changes,Get a list of all of the movie ids that have been changed in the past 24 hours
 - /addMovie , Store the movie into our database
 - /getMovies, Get all movies stored into database
+- /getMovie/id, Get one movie stored into database
+- /updateMovie/id , will update the movie into our database
+- /deleteMovie/id, will delete the movie from our database
